@@ -10,7 +10,7 @@
 #define _CGCANVAS_H_
 
 #include "simpleCanvas.h"
-
+#include <cmatrix>
 /**
  * Simple wrapper class for midterm assignment
  *

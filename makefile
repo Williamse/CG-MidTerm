@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Tue Oct  7 22:10:36 2014
+# Created by gmakemake (Ubuntu Jul 25 2014) on Wed Oct  8 14:39:39 2014
 #
 
 #
@@ -78,7 +78,7 @@ CPP_FILES =	cgCanvas.cpp midtermMain.cpp simpleCanvas.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
-H_FILES =	cgCanvas.h simpleCanvas.h
+H_FILES =	PolygonKeeper.h StructTypes.h cgCanvas.h simpleCanvas.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
 OBJFILES =	cgCanvas.o simpleCanvas.o 
