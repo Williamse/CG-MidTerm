@@ -1,7 +1,7 @@
 #ifndef _VERTEX_MATRIX_H
 #define _VERTEX_MATRIX_H
 #include <cmatrix>
-#include <Vector>
+#include <vector>
 
 namespace MidTerm
 {
@@ -19,7 +19,7 @@ namespace MidTerm
             
         public:
 
-    }
+    };
 }
 
 #endif
