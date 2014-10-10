@@ -268,6 +268,8 @@ bool keyTyped(enum sf::Keyboard::Key key)
 
 int main( int argc, char *argv[] )
 {
+  MidTerm::TransFormMatrix* m = new MidTerm::TransFormMatrix();
+  m->DisplayMatrix();
     // define your canvas
     cgCanvas C(drawWidth, drawHeight);
 

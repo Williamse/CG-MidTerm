@@ -2,7 +2,7 @@
 #define _VERTEX_MATRIX_H
 #include <cmatrix>
 #include <vector>
-
+#include <iostream>
 namespace MidTerm
 {
     //Define what a matrix is
@@ -13,7 +13,7 @@ namespace MidTerm
     {
         private:
             //The Actual Transform Matrix
-            TMatrix _Matrix;
+            TMatrix* _Matrix;
 
             //Apply the next transformation on the object
             void ApplyNextTransformation();
@@ -21,10 +21,13 @@ namespace MidTerm
 
         public:
 
-            //Returns the X and Y coordinates after performing all transformations
+            TransFormMatrix();
+	    //Returns the X and Y coordinates after performing all transformations
             //Index0 = X ; Index 1 = y
             std::vector<int> TransformPoly();
+	    
 
+	    void DisplayMatrix();
     };
 }
 
