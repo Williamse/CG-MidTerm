@@ -12,7 +12,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "cgCanvas.h"
-#include "VertexMatrix.h"
+#include "TransFormMatrix.h"
+#include "Polygon.h"
 /**
  * some globals since I didn't want to make a midtermMain class.
  */
@@ -267,7 +268,6 @@ bool keyTyped(enum sf::Keyboard::Key key)
 
 int main( int argc, char *argv[] )
 {
-
     // define your canvas
     cgCanvas C(drawWidth, drawHeight);
 

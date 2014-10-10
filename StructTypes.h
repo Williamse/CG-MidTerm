@@ -1,7 +1,7 @@
 #ifndef _STRUCT_TYPES_H
 #define _STRUCT_TYPES_H
 
-namespace BaseTypes
+namespace MidTerm
 {
     /**
     *Vertex Struct
