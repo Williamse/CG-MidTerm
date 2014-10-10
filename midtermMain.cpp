@@ -12,7 +12,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "cgCanvas.h"
-
+#include "VertexMatrix.h"
 /**
  * some globals since I didn't want to make a midtermMain class.
  */
