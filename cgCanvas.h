@@ -8,8 +8,10 @@
 
 #ifndef _CGCANVAS_H_
 #define _CGCANVAS_H_
-
+class Rasterizer;
 #include "simpleCanvas.h"
+#include "Rasterizer.h"
+#include "Polygon.h"
 
 /**
  * Simple wrapper class for midterm assignment
@@ -22,9 +24,28 @@
  * are to be modified by students.
  */
 
+struct PolygonPointer
+{
+    int ID;
+    MidTerm::Polygon* Polygon;
+};
+
 class cgCanvas : public simpleCanvas {
 
+private:
+    MidTerm::TransFormMatrix* mat;
+
+    Rasterizer* Rast;
+    std::vector<PolygonPointer*>* PolyGons;
+    int CurId;
+
+
 public:
+
+
+    void DrawPolygon(int id, MidTerm::TransFormMatrix mat);
+    int AddPolygon(MidTerm::Polygon* poly);
+
     /**
      * Constructor
      *
@@ -32,7 +53,7 @@ public:
      * @param h - height of canvas
      */
     cgCanvas(int w, int h);
-
+    ~cgCanvas();
     /**
      *
      * addPoly - Add a polygon to the canvas.  This method does not draw

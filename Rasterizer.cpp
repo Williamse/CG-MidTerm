@@ -21,16 +21,6 @@ using namespace std;
 
 
 /**
- * Constructor
- *
- * @param n - number of scanlines
- *
- */
-Rasterizer::Rasterizer (int n) : n_scanlines (n)
-{
-}
-
-/**
 *Constructs the Edge table 
 */
 void Rasterizer::BuildEdgeTable(vector<AllEdge>& EmptyEdge, int n, int x[], int y[])
@@ -136,8 +126,12 @@ void Rasterizer::BuildActiveEdge(vector<AllEdge>& active, vector<AllEdge>& Globa
  * You are to add the implementation here using only calls
  * to C.setPixel()
  */
-void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
+void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C)
 {
+    int n = poly->GetVertexCount();
+    int *x = poly->GetX();
+    int *y = poly->GetY();
+
 	//Build the all edge table
 	vector<AllEdge> all_edge;
 	BuildEdgeTable(all_edge, n, x, y);
@@ -202,6 +196,8 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 		sort(active_edge->begin(), active_edge->end());
 		
 	}
+    delete[] x;
+    delete[] y;
 }
 
 /*

@@ -4,6 +4,7 @@
 #define _POLYGON_H
 #include "StructTypes.h"
 #include <vector>
+#include "TransFormMatrix.h"
 namespace MidTerm
 {
 
@@ -12,10 +13,14 @@ namespace MidTerm
 
     public:
         Polygon(const float x[], const float y[],int vertCount);
-
-    private:
+        ~Polygon();
+        void Transform(MidTerm::TransFormMatrix mat);
         //All Vertexes of the polygon
-        std::vector<Vertex> PolyGonVertexes;
+        int* GetX();
+        int* GetY();
+        int GetVertexCount();
+    private:
+        std::vector<Vertex*>* PolyGonVertexes;
 
     };
 }

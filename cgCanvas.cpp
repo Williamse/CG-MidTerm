@@ -27,9 +27,28 @@
  */
 cgCanvas::cgCanvas(int w, int h) : simpleCanvas (w,h)
 {
-    // YOUR IMPLEMENTATION HERE if you need to modify the constructor
+    this->PolyGons = new vector<PolygonPointer*>();
+    this->mat = new MidTerm::TransFormMatrix();
+    this->Rast = new Rasterizer();
+
+        // YOUR IMPLEMENTATION HERE if you need to modify the constructor
 }
 
+cgCanvas::~cgCanvas()
+{
+    delete this->mat;
+    this->mat = NULL;
+
+    for (int x = 0; x < this->PolyGons->size(); x++)
+    {
+        delete this->PolyGons->at(x);
+        this->PolyGons->at(x) = NULL;
+    }
+    delete this->PolyGons;
+    this->PolyGons = NULL;
+    delete this->Rast;
+    this->Rast = NULL;
+}
 /**
  * addPoly - Add a polygon to the canvas.  This method does not draw
  *           the polygon, but merely stores it for later drawing.
@@ -45,10 +64,17 @@ cgCanvas::cgCanvas(int w, int h) : simpleCanvas (w,h)
  */
 int cgCanvas::addPoly (const float x[], const float y[], int n)
 {
-    // YOUR IMPLEMENTATION HERE
+    
+    this->CurId++;
+    PolygonPointer* p = new PolygonPointer();
+    p->Polygon = new MidTerm::Polygon(x, y, n);
+    p->ID = this->CurId;
+    this->PolyGons->push_back(p);
+    return CurId;
 
+
+    // YOUR IMPLEMENTATION HERE
     // REMEMBER TO RETURN A UNIQUE ID FOR THE POLYGON
-    return 0;
 }
 
 /**
@@ -60,7 +86,16 @@ int cgCanvas::addPoly (const float x[], const float y[], int n)
  */
 void cgCanvas::drawPoly (int polyID)
 {
-    // YOUR IMPLEMENTATION HERE
+    MidTerm::Polygon* pol = NULL;
+    for (int x = 0; x < this->PolyGons->size(); x++)
+    {
+        if (this->PolyGons->at(x)->ID == polyID)
+        {
+            pol = this->PolyGons->at(x)->Polygon;
+            this->Rast->drawPolygon(pol, *this);
+            break;
+        }
+    }
 }
 
 /**
@@ -68,7 +103,7 @@ void cgCanvas::drawPoly (int polyID)
  */
 void cgCanvas::clearTransform()
 {
-    // YOUR IMPLEMENTATION HERE
+    this->mat->Clear();
 }
 
 /**
@@ -81,6 +116,7 @@ void cgCanvas::clearTransform()
  */
 void cgCanvas::translate (float x, float y)
 {
+    this->mat->Translate(x, y);
     // YOUR IMPLEMENTATION HERE
 }
 
@@ -93,6 +129,7 @@ void cgCanvas::translate (float x, float y)
  */
 void cgCanvas::rotate (float degrees)
 {
+    this->mat->Rotate(degrees);
     // YOUR IMPLEMENTATION HERE
 }
 
@@ -106,6 +143,7 @@ void cgCanvas::rotate (float degrees)
  */
 void cgCanvas::scale (float x, float y)
 {
+    this->mat->Scale(x, y);
     // YOUR IMPLEMENTATION HERE
 }
 

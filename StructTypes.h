@@ -1,6 +1,7 @@
 #ifndef _STRUCT_TYPES_H
 #define _STRUCT_TYPES_H
-
+#include <iostream>
+#include "TransFormMatrix.h"
 namespace MidTerm
 {
     /**
@@ -9,6 +10,20 @@ namespace MidTerm
     struct Vertex
     {
         float x, y;
+
+        //Apply a transform to this Vertex
+        void Transform(TransFormMatrix matrix)
+        {
+            MidTerm::Vector temp_vec = MidTerm::Vector(3);
+            temp_vec[0] = this->x;
+            temp_vec[1] = this->y;
+            temp_vec[2] = 1;
+
+            temp_vec = (*matrix._Matrix) * temp_vec;
+
+            this->x = temp_vec[0];
+            this->y = temp_vec[1];
+        }
     };
 
     /*

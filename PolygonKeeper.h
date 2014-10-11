@@ -5,26 +5,28 @@
 
 #ifndef _POLYGONKEEPER_H
 #define _POLYGONKEEPER_H
-#include"Polygon.h"
-#include<vector>
 
-//Represents a Vertacie
-struct Vertacie
+#include"Polygon.h"
+#include "Rasterizer.h"
+#include <vector>
+
+
+struct PolygonPointer
 {
-}
-//Represents a line
-struct Line
-{
-}
-//Represents a Polygon
-struct Polygon
-{
-    
-}
+    int ID;
+    MidTerm::Polygon* Polygon;
+};
 
 class PolyGonKeeper
 {
+    public:
+        void DrawPolygon(int id, MidTerm::TransFormMatrix mat);
+        int AddPolygon(MidTerm::Polygon* poly);
+        PolyGonKeeper();
+        ~PolyGonKeeper();
     private:
-	Vector< polyCount;
-	
-}
+        Rasterizer* Rast;
+        std::vector<PolygonPointer*> PolyGons;
+        int CurId;
+};
+#endif

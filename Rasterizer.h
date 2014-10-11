@@ -10,6 +10,10 @@
 #define _RASTERIZER_H
 #include <vector>
 #include <math.h>
+#include "cgCanvas.h"
+#include "Polygon.h"
+
+
 class simpleCanvas;
 
 //A class that holds information about an edge
@@ -48,14 +52,6 @@ class Rasterizer {
 
 public:
     /**
-     * Constructor
-     *
-     * @param n - number of scanlines
-     *
-     */
-    Rasterizer (int n);
-
-    /**
      * Draw a filled polygon in the simpleCanvas C.
      *
      * The polygon has n distinct vertices.  The coordinates of the vertices
@@ -65,7 +61,7 @@ public:
      * You are to add the implementation here using only calls
      * to C.setPixel()
      */
-    void drawPolygon(int n, int x[], int y[], simpleCanvas &C);
+    void drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C);
 
 private:
     /**
