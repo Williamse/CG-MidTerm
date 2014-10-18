@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Fri Oct 10 13:23:08 2014
+# Created by gmakemake (Ubuntu Jul 25 2014) on Sat Oct 18 18:15:42 2014
 #
 
 #
@@ -74,14 +74,14 @@ CCLIBFLAGS = $(LIBFLAGS)
 ########## End of flags from header.mak
 
 
-CPP_FILES =	Rasterizer.cpp TransFormMatrix.cpp cgCanvas.cpp clipper.cpp midtermMain.cpp simpleCanvas.cpp
+CPP_FILES =	Polygon.cpp Rasterizer.cpp TransFormMatrix.cpp VertexMatrix.cpp cgCanvas.cpp clipper.cpp midtermMain.cpp simpleCanvas.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
-H_FILES =	PolygonKeeper.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
+H_FILES =	Polygon.h PolygonKeeper.h Rasterizer.h StructTypes.h TransFormMatrix.h VertexMatrix.h cgCanvas.h clipper.h simpleCanvas.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	Rasterizer.o TransFormMatrix.o cgCanvas.o clipper.o simpleCanvas.o 
+OBJFILES =	Polygon.o Rasterizer.o TransFormMatrix.o VertexMatrix.o cgCanvas.o clipper.o simpleCanvas.o 
 
 #
 # Main targets
@@ -96,11 +96,13 @@ midtermMain:	midtermMain.o $(OBJFILES)
 # Dependencies
 #
 
-Rasterizer.o:	Rasterizer.h simpleCanvas.h
-TransFormMatrix.o:	TransFormMatrix.h
-cgCanvas.o:	cgCanvas.h simpleCanvas.h
+Polygon.o:	Polygon.h StructTypes.h TransFormMatrix.h clipper.h simpleCanvas.h
+Rasterizer.o:	Polygon.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
+TransFormMatrix.o:	StructTypes.h TransFormMatrix.h
+VertexMatrix.o:	VertexMatrix.h
+cgCanvas.o:	Polygon.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
 clipper.o:	clipper.h simpleCanvas.h
-midtermMain.o:	TransFormMatrix.h cgCanvas.h simpleCanvas.h
+midtermMain.o:	Polygon.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
 simpleCanvas.o:	simpleCanvas.h
 
 #
