@@ -10,10 +10,11 @@
 #define _RASTERIZER_H
 #include <vector>
 #include <math.h>
-#include "cgCanvas.h"
 #include "Polygon.h"
+#include "cgCanvas.h"
 
-
+#include "StructTypes.h"
+#include "TransFormMatrix.h"
 class simpleCanvas;
 
 //A class that holds information about an edge
@@ -61,7 +62,7 @@ public:
      * You are to add the implementation here using only calls
      * to C.setPixel()
      */
-    void drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C);
+    void drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top, float bottom, float left, float right);
 
 private:
     /**
@@ -78,7 +79,7 @@ private:
 	/**
 	*Build the edge table 
 	*/
-	void BuildEdgeTable(std::vector<AllEdge>& EmptyEdge, int n, int x[], int y[]);
+    void BuildEdgeTable(std::vector<AllEdge>& EmptyEdge, int n, float x[], float y[]);
 
 	//Maximum of two ints
 	int Max(int one, int two);
@@ -91,6 +92,8 @@ private:
 
 	//Slope of aline
 	double slope(int y0, int y1, int x0, int x1);
+
+    float GetWorld(float start, float end, float worldcoord);
 };
 
 

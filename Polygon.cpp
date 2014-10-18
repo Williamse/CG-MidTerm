@@ -4,7 +4,8 @@
 
 using namespace MidTerm;
 
-
+//Let the OS delete me
+clipper* Polygon::Clipper = new clipper();
 
 Polygon::Polygon(const float x[], const float y[], int vertCount)
 {
@@ -17,6 +18,7 @@ Polygon::Polygon(const float x[], const float y[], int vertCount)
 
         this->PolyGonVertexes->push_back(vert);
     }
+    
 }
 Polygon::~Polygon()
 {
@@ -39,23 +41,79 @@ void Polygon::Transform(MidTerm::TransFormMatrix mat)
 }
 int Polygon::GetVertexCount()
 {
-    return this->PolyGonVertexes->size();
+    int return_val = this->HasClipped() ? this->PolyGonVertexsClipped->size() : this->PolyGonVertexes->size();
+
+    return return_val;
 }
-int * Polygon::GetX()
+float * Polygon::GetX()
 {
-    int  * returnval = new int[this->PolyGonVertexes->size()];
+
+    float  * returnval = new float[this->PolyGonVertexes->size()];
     for (int x = 0; x < this->PolyGonVertexes->size(); x++)
     {
         returnval[x] = this->PolyGonVertexes->at(x)->x;
     }
     return returnval;
 }
-int * Polygon::GetY()
+float * Polygon::GetY()
 {
-    int * returnval = new int[this->PolyGonVertexes->size()];
+    float * returnval = new float[this->PolyGonVertexes->size()];
     for (int x = 0; x < this->PolyGonVertexes->size(); x++)
     {
         returnval[x] = this->PolyGonVertexes->at(x)->y;
     }
     return returnval;
+}
+
+float * Polygon::GetXClipped()
+{
+    float  * returnval = new float[this->PolyGonVertexsClipped->size()];
+    for (int x = 0; x < this->PolyGonVertexsClipped->size(); x++)
+    {
+        returnval[x] = this->PolyGonVertexsClipped->at(x)->x;
+    }
+    return returnval;
+}
+float *Polygon::GetYClipped()
+{
+    float * returnval = new float[this->PolyGonVertexsClipped->size()];
+    for (int x = 0; x < this->PolyGonVertexsClipped->size(); x++)
+    {
+        returnval[x] = this->PolyGonVertexsClipped->at(x)->y;
+    }
+    return returnval;
+}
+
+bool Polygon::HasClipped()
+{
+    if (this->PolyGonVertexsClipped != NULL && this->PolyGonVertexsClipped->size() > 0)
+    {
+        return true;
+    }
+    return false;
+}
+void Polygon::Clip(Vertex* topLeft, Vertex* TopRight, Vertex* bottomLeft, Vertex* BottomRight)
+{
+    int inSize = this->PolyGonVertexes->size();
+    float * outX = new float[inSize];
+    float * outY = new float[inSize];
+
+
+
+    int outSize = this->Clipper->clipPolygon(inSize, this->GetX(), this->GetY(), outX, outY, bottomLeft->x, bottomLeft->y, TopRight->x, TopRight->y);
+    for (int x = 0; this->PolyGonVertexsClipped != NULL && x < this->PolyGonVertexsClipped->size(); x++)
+    {
+        delete this->PolyGonVertexsClipped->at(x);
+        this->PolyGonVertexsClipped->at(x) = NULL;
+    }
+    if (this->PolyGonVertexsClipped != NULL) { this->PolyGonVertexsClipped->clear(); };
+    for (int x = 0; x < outSize; x++)
+    {
+        Vertex* ver = new Vertex();
+        ver->x = outX[x];
+        ver->y = outY[x];
+
+        if (this->PolyGonVertexsClipped == NULL){ this->PolyGonVertexsClipped = new vector<MidTerm::Vertex*>(); }
+        this->PolyGonVertexsClipped->push_back(ver);
+    }
 }

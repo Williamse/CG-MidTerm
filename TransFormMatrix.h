@@ -30,8 +30,9 @@ namespace MidTerm
 	    void Scale(float x, float y);
 	    void Translate(float x,float y);
 	    void Rotate(float degrees);
-        void TransFormMatrix::AddTransForm(TMatrix* OtherMatrix);
+        void AddTransForm(TMatrix* OtherMatrix);
         void Clear();
+        void NormalizedTransform(float left, float right, float top, float bottom);
     };
 }
 

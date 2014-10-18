@@ -38,10 +38,16 @@ private:
     Rasterizer* Rast;
     std::vector<PolygonPointer*>* PolyGons;
     int CurId;
+    
 
 
 public:
 
+    //Clipping stuff
+    MidTerm::Vertex* topLeft;
+    MidTerm::Vertex* topRight;
+    MidTerm::Vertex* bottomLeft;
+    MidTerm::Vertex* bottomRight;
 
     void DrawPolygon(int id, MidTerm::TransFormMatrix mat);
     int AddPolygon(MidTerm::Polygon* poly);

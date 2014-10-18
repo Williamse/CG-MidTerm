@@ -5,11 +5,14 @@
 //  Created by Joe Geigel on 11/30/11.
 //  Copyright 2011 Rochester Institute of Technology. All rights reserved.
 //
-
+#include "Polygon.h"
 #include "Rasterizer.h"
 #include "simpleCanvas.h"
 #include <float.h>
 #include <iostream>
+#include "clipper.h"
+#include <math.h>
+
 using namespace std;
 
 
@@ -23,7 +26,7 @@ using namespace std;
 /**
 *Constructs the Edge table 
 */
-void Rasterizer::BuildEdgeTable(vector<AllEdge>& EmptyEdge, int n, int x[], int y[])
+void Rasterizer::BuildEdgeTable(vector<AllEdge>& EmptyEdge, int n, float x[], float y[])
 {
 	//For each vertacie
 	for (int vertacie = 0; vertacie < n; vertacie++)
@@ -111,7 +114,7 @@ void Rasterizer::BuildActiveEdge(vector<AllEdge>& active, vector<AllEdge>& Globa
 			deleted++;
 		}
 	}
-
+    
 	//Remove dynamic table
 	delete GlobalCopy;
 }
@@ -126,11 +129,13 @@ void Rasterizer::BuildActiveEdge(vector<AllEdge>& active, vector<AllEdge>& Globa
  * You are to add the implementation here using only calls
  * to C.setPixel()
  */
-void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C)
+void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,float bottom,float left, float right)
 {
     int n = poly->GetVertexCount();
-    int *x = poly->GetX();
-    int *y = poly->GetY();
+
+    float *x = poly->HasClipped() ? poly->GetXClipped() : poly->GetX();
+    float *y = poly->HasClipped() ? poly->GetYClipped() : poly->GetY();
+
 
 	//Build the all edge table
 	vector<AllEdge> all_edge;
@@ -144,7 +149,7 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C)
 	int max_scanline = global_edge.back().MaxY;
 	int cur_x = 0;
 
-	//active edge table
+	//active edge table6
 	vector<AllEdge>* active_edge = new vector<AllEdge>();
 	this->BuildActiveEdge(*active_edge, global_edge, scanline);  //this->BuildActiveEdge(global_edge, scanline);
 	
@@ -168,8 +173,33 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C)
 			//If parity is odd draw
 			if (!parity_even)
 			{
-				C.setPixel(cur_x, cur_scan);
-			}
+                float sx; 
+                float sy;
+
+         //       MidTerm::Vertex* point = new MidTerm::Vertex();
+         //       point->x = cur_x;
+          //      point->y = cur_scan;
+                
+          //      MidTerm::TransFormMatrix* mat = new MidTerm::TransFormMatrix();
+          //      mat->NormalizedTransform(left, right, top, bottom);
+           //     point->Transform(*mat);
+
+
+
+              //  if (left == NULL)
+              //  {
+                    //Convert to screen coords     
+                  //  sx = GetWorld(right, left, cur_x);
+                 //   sy = GetWorld(top, bottom, cur_scan);
+               // }
+               // else
+              //  {
+           //         sx = cur_x;
+         //           sy = cur_scan;
+               // }
+             //   C.setPixel(point->x, point->y);
+               C.setPixel(cur_x, cur_scan);
+            }
 		}
 
 		//Update the X value 
@@ -198,6 +228,11 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C)
 	}
     delete[] x;
     delete[] y;
+}
+
+float Rasterizer::GetWorld(float start, float end,float worldcoord)
+{
+    return ((2 / (start - end)) * worldcoord) + (((-2 * end) / (start - end)) - 1);
 }
 
 /*

@@ -48,6 +48,10 @@ cgCanvas::~cgCanvas()
     this->PolyGons = NULL;
     delete this->Rast;
     this->Rast = NULL;
+    delete this->topLeft;
+    delete this->topRight;
+    delete this->bottomLeft;
+    delete this->bottomRight;
 }
 /**
  * addPoly - Add a polygon to the canvas.  This method does not draw
@@ -87,12 +91,32 @@ int cgCanvas::addPoly (const float x[], const float y[], int n)
 void cgCanvas::drawPoly (int polyID)
 {
     MidTerm::Polygon* pol = NULL;
+
     for (int x = 0; x < this->PolyGons->size(); x++)
     {
         if (this->PolyGons->at(x)->ID == polyID)
         {
             pol = this->PolyGons->at(x)->Polygon;
-            this->Rast->drawPolygon(pol, *this);
+
+            pol->Transform(*(this->mat));
+
+
+           // Normalized coords
+      //     MidTerm::TransFormMatrix* mat = new MidTerm::TransFormMatrix();
+     //      mat->NormalizedTransform(this->bottomLeft->x, this->bottomRight->x, this->topLeft->y, this->bottomLeft->y);
+     //      pol->Transform(*mat);
+
+
+//            pol->Clip(this->topLeft, this->topRight, this->bottomLeft, this->bottomRight);
+
+
+
+
+
+
+
+
+            this->Rast->drawPolygon(pol, *this,this->topLeft->y,this->bottomLeft->y,this->bottomLeft->x,this->bottomRight->x);
             break;
         }
     }
@@ -157,7 +181,21 @@ void cgCanvas::scale (float x, float y)
  */
 void cgCanvas::setClipWindow (float bottom, float top, float left, float right)
 {
-    // YOUR IMPLEMENTATION HERE
+    this->topLeft = new MidTerm::Vertex();
+    this->topLeft->x = left;
+    this->topLeft->y = top;
+
+    this->topRight = new MidTerm::Vertex();
+    this->topRight->x = right;
+    this->topRight->y = top;
+
+    this->bottomLeft = new MidTerm::Vertex();
+    this->bottomLeft->x = left;
+    this->bottomLeft->y = bottom;
+
+    this->bottomRight = new MidTerm::Vertex();
+    this->bottomRight->x = right;
+    this->bottomRight->y = bottom;
 }
 
 /**
