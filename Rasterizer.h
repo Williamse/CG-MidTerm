@@ -74,7 +74,7 @@ private:
 	std::vector<AllEdge> BuildGlobalEdge(std::vector<AllEdge> all_edge);
 
 	//Builds the Active Edge Table
-	void BuildActiveEdge(std::vector<AllEdge>& active, std::vector<AllEdge>& GlobalEdge, int scanline);
+    void BuildActiveEdge(std::vector<AllEdge>& active, std::vector<AllEdge>& GlobalEdge, float scanline);
 
 	/**
 	*Build the edge table 
@@ -82,16 +82,16 @@ private:
     void BuildEdgeTable(std::vector<AllEdge>& EmptyEdge, int n, float x[], float y[]);
 
 	//Maximum of two ints
-    int Max(int one, int two);
+    float Max(float one, float two);
 	
 	//Minium of two ints
-	int Min(int one, int two);
+    float Min(float one, float two);
 
 	//One over slope of a line
-	double one_over_slope(int y0, int y1, int x0, int x1);
+    float one_over_slope(float y0, float y1, float x0, float x1);
 
 	//Slope of aline
-	double slope(int y0, int y1, int x0, int x1);
+    float slope(float y0, float y1, float x0, float x1);
 
     float GetWorld(float start, float end, float worldcoord);
 };

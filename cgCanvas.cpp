@@ -128,7 +128,11 @@ void cgCanvas::drawPoly (int polyID)
  */
 void cgCanvas::clearTransform()
 {
-    this->mat->Clear();
+    this->mat->DisplayMatrix(); 
+    delete this->mat;
+    this->mat = NULL;
+    this->mat = new MidTerm::TransFormMatrix();
+    this->mat->DisplayMatrix();
 }
 
 /**

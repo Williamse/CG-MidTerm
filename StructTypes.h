@@ -27,8 +27,8 @@ namespace MidTerm
 
             temp_vec = (*matrix._Matrix) * temp_vec;
 
-            this->x = temp_vec[0];
-            this->y = temp_vec[1];
+            this->x = round(temp_vec[0]);
+            this->y = round(temp_vec[1]);
         }
         void Reset()
         {

@@ -74,14 +74,14 @@ CCLIBFLAGS = $(LIBFLAGS)
 ########## End of flags from header.mak
 
 
-CPP_FILES =	Polygon.cpp Rasterizer.cpp TransFormMatrix.cpp VertexMatrix.cpp cgCanvas.cpp clipper.cpp midtermMain.cpp simpleCanvas.cpp
+CPP_FILES =	Polygon.cpp Rasterizer.cpp TransFormMatrix.cpp cgCanvas.cpp clipper.cpp midtermMain.cpp simpleCanvas.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
-H_FILES =	Polygon.h PolygonKeeper.h Rasterizer.h StructTypes.h TransFormMatrix.h VertexMatrix.h cgCanvas.h clipper.h simpleCanvas.h
+H_FILES =	Polygon.h PolygonKeeper.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	Polygon.o Rasterizer.o TransFormMatrix.o VertexMatrix.o cgCanvas.o clipper.o simpleCanvas.o 
+OBJFILES =	Polygon.o Rasterizer.o TransFormMatrix.o cgCanvas.o clipper.o simpleCanvas.o 
 
 #
 # Main targets
@@ -99,7 +99,6 @@ midtermMain:	midtermMain.o $(OBJFILES)
 Polygon.o:	Polygon.h StructTypes.h TransFormMatrix.h clipper.h simpleCanvas.h
 Rasterizer.o:	Polygon.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
 TransFormMatrix.o:	StructTypes.h TransFormMatrix.h
-VertexMatrix.o:	VertexMatrix.h
 cgCanvas.o:	Polygon.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h
 clipper.o:	clipper.h simpleCanvas.h
 midtermMain.o:	Polygon.h Rasterizer.h StructTypes.h TransFormMatrix.h cgCanvas.h clipper.h simpleCanvas.h

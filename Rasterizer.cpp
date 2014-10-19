@@ -57,7 +57,7 @@ std::vector<AllEdge> Rasterizer::BuildGlobalEdge(vector<AllEdge> all_edge)
 	vector<AllEdge> global_edge;
 
 	//For every edge
-	for (int all_e = 0; all_e < all_edge.size(); all_e++)
+    for (float all_e = 0; all_e < all_edge.size(); all_e++)
 	{
 		//Add the first edge that does not have a slope of zero
 		if (global_edge.size() == 0 && all_edge.at(all_e).RealSlope != 0)
@@ -92,7 +92,7 @@ std::vector<AllEdge> Rasterizer::BuildGlobalEdge(vector<AllEdge> all_edge)
 *  GlobalEdge  = Reference to the GlobalEdge table
 *  Scanline    = The Scanline to use to determine what values should be moved to the active table
 */
-void Rasterizer::BuildActiveEdge(vector<AllEdge>& active, vector<AllEdge>& GlobalEdge, int scanline)
+void Rasterizer::BuildActiveEdge(vector<AllEdge>& active, vector<AllEdge>& GlobalEdge, float scanline)
 {
 	vector<AllEdge>*GlobalCopy = new vector<AllEdge>(GlobalEdge);
 	int g_size = GlobalEdge.size();
@@ -145,22 +145,22 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,
 	vector<AllEdge> global_edge = BuildGlobalEdge(all_edge);
 
 	//get initial scanline 
-	int scanline = global_edge.at(0).MinY;
-	int max_scanline = global_edge.back().MaxY;
-	int cur_x = 0;
+    float scanline = global_edge.at(0).MinY;
+    float max_scanline = global_edge.back().MaxY;
+    float cur_x = 0;
 
 	//active edge table6
 	vector<AllEdge>* active_edge = new vector<AllEdge>();
 	this->BuildActiveEdge(*active_edge, global_edge, scanline);  //this->BuildActiveEdge(global_edge, scanline);
 	
 	//for every scanline
-	for (int cur_scan = scanline; cur_scan < max_scanline; cur_scan++)
+    for (int cur_scan = scanline; cur_scan < max_scanline; cur_scan++)
 	{
 		bool parity_even = true;
 		int cur_active_index = 0;
 
 		//Go through the scan line ;
-		for (int cur_x = active_edge->at(0).X_OfMinY; cur_x <= active_edge->back().X_OfMinY; cur_x++)
+        for (int cur_x = active_edge->at(0).X_OfMinY; cur_x <= active_edge->back().X_OfMinY; cur_x++)
 		{
 			//Are we at an edge
 			if (round(active_edge->at(cur_active_index).X_OfMinY) == cur_x)
@@ -242,7 +242,7 @@ float Rasterizer::GetWorld(float start, float end,float worldcoord)
 /*
 * Maximum of two integer values
 */
-int Rasterizer::Max(int one, int two)
+float Rasterizer::Max(float one, float two)
 {
 	return (one >= two) ? one : two;
 }
@@ -250,7 +250,7 @@ int Rasterizer::Max(int one, int two)
 /*
 * Minimum Of two integer values
 */
-int Rasterizer::Min(int one, int two)
+float Rasterizer::Min(float one, float two)
 {
 	return (one >= two) ? two : one;
 }
@@ -263,10 +263,10 @@ int Rasterizer::Min(int one, int two)
 * x0  = x zero
 * x1  = x one
 */
-double Rasterizer::one_over_slope(int y0, int y1, int x0, int x1)
+float Rasterizer::one_over_slope(float y0, float y1, float x0, float x1)
 {
-	double slope;
-	if (y0 == y1){ slope = DBL_MAX; }
+    float slope;
+	if (y0 == y1){ slope = FLT_MAX; }
 	else if(x0 == x1){ slope = 0 ; }
 	else 
 	{ 
@@ -284,11 +284,11 @@ double Rasterizer::one_over_slope(int y0, int y1, int x0, int x1)
 * x0 = x zero
 * x1 = x one
 */
-double Rasterizer::slope(int y0, int y1, int x0, int x1)
+float Rasterizer::slope(float y0, float y1, float x0, float x1)
 {
-	double slope;
-	double top = y0 - y1;
-	double bottom = x0 - x1;
+    float slope;
+    float top = y0 - y1;
+    float bottom = x0 - x1;
 	slope = top / bottom;
 	return slope;
 }
