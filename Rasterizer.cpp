@@ -198,7 +198,11 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,
          //           sy = cur_scan;
                // }
              //   C.setPixel(point->x, point->y);
-               C.setPixel(cur_x, cur_scan);
+                if (cur_x >= 1 && cur_scan >= 1)
+                {
+
+                    C.setPixel(cur_x, cur_scan);
+                }
             }
 		}
 

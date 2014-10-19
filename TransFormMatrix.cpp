@@ -57,8 +57,9 @@ void TransFormMatrix::Scale(float x, float y)
   scaled[0][0][0] = x;
   scaled[0][1][1] = y;
   scaled[0][2][2] = 1;
-  
+
   this->AddTransForm(scaled);
+  this->DisplayMatrix();
   
 }
 void TransFormMatrix::NormalizedTransform(float left,float right, float top, float bottom)
@@ -83,8 +84,6 @@ void TransFormMatrix::NormalizedTransform(float left,float right, float top, flo
 
 
     this->AddTransForm(normalizer);
-
-    this->DisplayMatrix();
 }
 void TransFormMatrix::Translate(float x,float y)
 {
@@ -102,7 +101,7 @@ void TransFormMatrix::Translate(float x,float y)
 }
 void TransFormMatrix::Rotate(float degrees)
 {
-
+  degrees = (degrees * 3.141592653589793f) / 180.0f;
   TMatrix* rotated = new TMatrix(3,3);
 
 
@@ -118,5 +117,4 @@ void TransFormMatrix::Rotate(float degrees)
   //Row 3
   rotated[0][2][2] = 1;
   this->AddTransForm(rotated); 
-  this->DisplayMatrix();
 }

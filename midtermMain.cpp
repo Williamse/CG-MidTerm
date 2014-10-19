@@ -12,8 +12,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "cgCanvas.h"
-#include "TransFormMatrix.h"
-#include "Polygon.h"
+
 /**
  * some globals since I didn't want to make a midtermMain class.
  */
@@ -62,8 +61,8 @@ void drawPolysNorm( cgCanvas &C )
     /*
      * Draw a green star
      */
-    C.setColor( 0.68f, 0.0f, 0.75f );
-    C.drawPoly( star );
+  //  C.setColor( 0.68f, 0.0f, 0.75f );
+  //  C.drawPoly( star );
 }
 
 
@@ -75,37 +74,38 @@ void drawPolysXform( cgCanvas &C ) {
     /*
      * Draw a dark blue/purple triangle rotated
      */
-    C.clearTransform();
-    C.rotate( -25.0f );
-    C.setColor( 0.25f, 0.0f, 0.74f );
-    C.drawPoly( triangle );
+ //   C.clearTransform();
+ // C.rotate( -25.0f );
+   // C.scale(0.75f, 0.5f);
+ //C.setColor( 0.25f, 0.0f, 0.74f );
+ //  C.drawPoly( triangle );
 
     /*
      * Draw a green square translated
      */
-    C.clearTransform();
-    C.translate( 80.0f, 75.0f );
-    C.setColor( 0.0f, 0.91f, 0.08f );
-    C.drawPoly( square );
+ //   C.clearTransform();
+    //C.translate( 80.0f, 75.0f );
+ //   C.setColor( 0.0f, 0.91f, 0.08f );
+ //   C.drawPoly( square );
 
     /*
      * Draw a pink octagon scaled
      */
-    C.clearTransform();
-    C.scale( 0.75f, 0.5f );
-    C.setColor( 0.98f, 0.0f, 0.48f );
-    C.drawPoly( octagon );
+  C.clearTransform();
+   C.scale( 0.75f, 0.5f );
+   C.setColor( 0.98f, 0.0f, 0.48f );
+   C.drawPoly( octagon );
 
     /*
      * Draw a green star translated, scaled, rotated, then scaled back
      */
-    C.clearTransform();
-    C.translate( 50.0f, 50.0f );
-    C.scale( 2.0f, 2.0f );
-    C.rotate( -10.0f );
-    C.translate( -50.0f, 50.0f );
-    C.setColor( 0.68f, 0.0f, 0.75f );
-    C.drawPoly( star );
+ //   C.clearTransform();
+  //  C.translate( 50.0f, 50.0f );
+  //  C.scale( 2.0f, 2.0f );
+  //  C.rotate( -10.0f );
+ //   C.translate( -50.0f, 50.0f );
+ //  C.setColor( 0.68f, 0.0f, 0.75f );
+ //   C.drawPoly( star );
 }
 
 /**
@@ -268,8 +268,7 @@ bool keyTyped(enum sf::Keyboard::Key key)
 
 int main( int argc, char *argv[] )
 {
-  MidTerm::TransFormMatrix* m = new MidTerm::TransFormMatrix();
-  m->DisplayMatrix();
+
     // define your canvas
     cgCanvas C(drawWidth, drawHeight);
 

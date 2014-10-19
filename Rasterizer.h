@@ -21,20 +21,20 @@ class simpleCanvas;
 typedef struct allEdge
 {
 	//X and Y values for the edge
-	int x0, y0,x1,y1;
+	float x0, y0,x1,y1;
 
 	//Minimum y and X values
-	int MinY;
-	int MaxY;
+    float MinY;
+    float MaxY;
 
 	//x value at the minimum Y value
-	double X_OfMinY;
+    float X_OfMinY;
 
 	//Represents 1 / slope
-	double EdgeSlope;
+    float EdgeSlope;
 
 	//Slope of the value
-	double RealSlope;
+    float RealSlope;
 
 	//Overides the < operator (used when we sort the table after updating the x value)
 	bool operator < (const allEdge& str) const
@@ -82,7 +82,7 @@ private:
     void BuildEdgeTable(std::vector<AllEdge>& EmptyEdge, int n, float x[], float y[]);
 
 	//Maximum of two ints
-	int Max(int one, int two);
+    int Max(int one, int two);
 	
 	//Minium of two ints
 	int Min(int one, int two);

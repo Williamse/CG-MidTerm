@@ -98,6 +98,7 @@ void cgCanvas::drawPoly (int polyID)
         {
             pol = this->PolyGons->at(x)->Polygon;
 
+            pol->ResetTransforms();
             pol->Transform(*(this->mat));
 
 
@@ -181,21 +182,10 @@ void cgCanvas::scale (float x, float y)
  */
 void cgCanvas::setClipWindow (float bottom, float top, float left, float right)
 {
-    this->topLeft = new MidTerm::Vertex();
-    this->topLeft->x = left;
-    this->topLeft->y = top;
-
-    this->topRight = new MidTerm::Vertex();
-    this->topRight->x = right;
-    this->topRight->y = top;
-
-    this->bottomLeft = new MidTerm::Vertex();
-    this->bottomLeft->x = left;
-    this->bottomLeft->y = bottom;
-
-    this->bottomRight = new MidTerm::Vertex();
-    this->bottomRight->x = right;
-    this->bottomRight->y = bottom;
+    this->topLeft = new MidTerm::Vertex(left,top);
+    this->topRight = new MidTerm::Vertex(right,top);
+    this->bottomLeft = new MidTerm::Vertex(left,bottom);
+    this->bottomRight = new MidTerm::Vertex(right,bottom);
 }
 
 /**

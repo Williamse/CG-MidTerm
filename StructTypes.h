@@ -10,6 +10,12 @@ namespace MidTerm
     struct Vertex
     {
         float x, y;
+        float origx, origy;
+
+        Vertex(float x, float y) :origx(x), origy(y), x(x), y(y)
+        {
+
+        }
 
         //Apply a transform to this Vertex
         void Transform(TransFormMatrix matrix)
@@ -23,6 +29,11 @@ namespace MidTerm
 
             this->x = temp_vec[0];
             this->y = temp_vec[1];
+        }
+        void Reset()
+        {
+            this->x = origx;
+            this->y = origy;
         }
     };
 

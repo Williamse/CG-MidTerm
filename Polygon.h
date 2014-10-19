@@ -28,7 +28,7 @@ namespace MidTerm
         int GetVertexCount();
         void Clip(Vertex* topLeft, Vertex* TopRight, Vertex* bottomLeft, Vertex* BottomRight);
         bool HasClipped();
-
+        void ResetTransforms();
     private:
        
         std::vector<Vertex*>* PolyGonVertexes;
