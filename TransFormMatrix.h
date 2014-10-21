@@ -7,7 +7,7 @@ namespace MidTerm
 {
     //Define what a matrix is
     typedef techsoft::matrix<float> TMatrix;
-    typedef std::valarray<float>    Vector;
+    typedef std::valarray<float> Vector;
     //Represents a point as a Homogenous Matrix
     class TransFormMatrix
     {
@@ -16,15 +16,11 @@ namespace MidTerm
 
             //Apply the next transformation on the object
             void ApplyNextTransformation();
-            
-
         public:
-            //The Actual Transform Matrix
-            TMatrix* _Matrix;
-            TransFormMatrix();
-	    //Returns the X and Y coordinates after performing all transformations
-            //Index0 = X ; Index 1 = y
-            std::vector<int> TransformPoly();
+        TMatrix* _Matrix;
+	    ~TransFormMatrix();
+        TransFormMatrix();
+        std::vector<int> TransformPoly();
 	    void DisplayMatrix();
 	    void AddTransForm(TransFormMatrix* OtherMatrix);
 	    void Scale(float x, float y);
@@ -32,7 +28,8 @@ namespace MidTerm
 	    void Rotate(float degrees);
         void AddTransForm(TMatrix* OtherMatrix);
         void Clear();
-        void NormalizedTransform(float left, float right, float top, float bottom);
+        void NormalizedTransform(float left, float right, float top, float bottom, int width_world, int height_world, int xmin_screen, int ymin_screen);
+        void NormalizeAndViewport(float left, float right, float top, float bottom, int width_world, int height_world, int xmin_screen, int ymin_screen);
     };
 }
 

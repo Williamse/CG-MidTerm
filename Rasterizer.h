@@ -79,7 +79,7 @@ private:
 	/**
 	*Build the edge table 
 	*/
-    void BuildEdgeTable(std::vector<AllEdge>& EmptyEdge, int n, float x[], float y[]);
+    void BuildEdgeTable(std::vector<AllEdge>& EmptyEdge, int n, int x[], int y[]);
 
 	//Maximum of two ints
     float Max(float one, float two);

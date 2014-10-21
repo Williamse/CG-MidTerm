@@ -17,13 +17,13 @@ namespace MidTerm
 
         Polygon(const float x[], const float y[],int vertCount);
         ~Polygon();
-        void Transform(MidTerm::TransFormMatrix mat);
+        void Transform(MidTerm::TransFormMatrix* mat);
         //All Vertexes of the polygon
-        float* GetX();
-        float* GetY();
+        int* GetX();
+        int* GetY();
 
-        float* GetXClipped();
-        float* GetYClipped();
+        int* GetXClipped();
+        int* GetYClipped();
 
         int GetVertexCount();
         void Clip(Vertex* topLeft, Vertex* TopRight, Vertex* bottomLeft, Vertex* BottomRight);

@@ -33,6 +33,12 @@ struct PolygonPointer
 class cgCanvas : public simpleCanvas {
 
 private:
+
+    int viewport_lower_left_x;
+    int viewport_lower_left_y;
+    int viewport_width;
+    int viewport_height;
+
     MidTerm::TransFormMatrix* mat;
 
     Rasterizer* Rast;

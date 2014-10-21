@@ -120,9 +120,9 @@ bool clipper::Inside(EnumTypes::Vertex testVertex, EnumTypes::Line ClipBoundry)
  * @return number of vertices in the polygon resulting after clipping
  *
  */
-int clipper::clipPolygon(int in, const float inx[], const float iny[],
-                float outx[], float outy[],
-		float x0, float y0, float x1, float y1)
+int clipper::clipPolygon(int in, const int inx[], const int iny[],
+    int outx[], int outy[],
+    int x0, int y0, int x1, int y1)
 {
 	//Holds all dynamic memory here
 	this->dynamicVertexes = new std::vector<EnumTypes::Vertex*>();

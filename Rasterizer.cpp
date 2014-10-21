@@ -26,7 +26,7 @@ using namespace std;
 /**
 *Constructs the Edge table 
 */
-void Rasterizer::BuildEdgeTable(vector<AllEdge>& EmptyEdge, int n, float x[], float y[])
+void Rasterizer::BuildEdgeTable(vector<AllEdge>& EmptyEdge, int n, int x[], int y[])
 {
 	//For each vertacie
 	for (int vertacie = 0; vertacie < n; vertacie++)
@@ -117,6 +117,7 @@ void Rasterizer::BuildActiveEdge(vector<AllEdge>& active, vector<AllEdge>& Globa
     
 	//Remove dynamic table
 	delete GlobalCopy;
+	GlobalCopy = NULL;
 }
 
 /**
@@ -133,8 +134,8 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,
 {
     int n = poly->GetVertexCount();
 
-    float *x = poly->HasClipped() ? poly->GetXClipped() : poly->GetX();
-    float *y = poly->HasClipped() ? poly->GetYClipped() : poly->GetY();
+    int *x = poly->HasClipped() ? poly->GetXClipped() : poly->GetX();
+    int *y = poly->HasClipped() ? poly->GetYClipped() : poly->GetY();
 
 
 	//Build the all edge table
@@ -145,26 +146,31 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,
 	vector<AllEdge> global_edge = BuildGlobalEdge(all_edge);
 
 	//get initial scanline 
-    float scanline = global_edge.at(0).MinY;
-    float max_scanline = global_edge.back().MaxY;
-    float cur_x = 0;
+    int scanline = global_edge.at(0).MinY;
+    int max_scanline = global_edge.back().MaxY;
+    int cur_x = 0;
 
 	//active edge table6
 	vector<AllEdge>* active_edge = new vector<AllEdge>();
 	this->BuildActiveEdge(*active_edge, global_edge, scanline);  //this->BuildActiveEdge(global_edge, scanline);
 	
 	//for every scanline
-    for (int cur_scan = scanline; cur_scan < max_scanline; cur_scan++)
+    for (int cur_scan = scanline; cur_scan < max_scanline && cur_scan < 500; cur_scan++)
 	{
 		bool parity_even = true;
 		int cur_active_index = 0;
 
 		//Go through the scan line ;
-        for (int cur_x = active_edge->at(0).X_OfMinY; cur_x <= active_edge->back().X_OfMinY; cur_x++)
+        for (int cur_x = active_edge->at(0).X_OfMinY; cur_x <= active_edge->back().X_OfMinY && cur_x < 500; cur_x++)  //HACK < right
 		{
+            //Use this so that in case we need to draw just one point
+            float old_active_index = cur_active_index;
+            bool swapped = false;
+
 			//Are we at an edge
-			if (round(active_edge->at(cur_active_index).X_OfMinY) == cur_x)
+			if ((int)(active_edge->at(cur_active_index).X_OfMinY) == cur_x)
 			{
+                swapped = true;
 				//Swap parity value
 				parity_even = (parity_even) ? false : true;
 				cur_active_index++;
@@ -173,43 +179,37 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,
 			//If parity is odd draw
 			if (!parity_even)
 			{
-                float sx; 
-                float sy;
-
-         //       MidTerm::Vertex* point = new MidTerm::Vertex();
-         //       point->x = cur_x;
-          //      point->y = cur_scan;
-                
-          //      MidTerm::TransFormMatrix* mat = new MidTerm::TransFormMatrix();
-          //      mat->NormalizedTransform(left, right, top, bottom);
-           //     point->Transform(*mat);
-
-
-
-              //  if (left == NULL)
-              //  {
-                    //Convert to screen coords     
-                  //  sx = GetWorld(right, left, cur_x);
-                 //   sy = GetWorld(top, bottom, cur_scan);
-               // }
-               // else
-              //  {
-           //         sx = cur_x;
-         //           sy = cur_scan;
-               // }
-             //   C.setPixel(point->x, point->y);
-                if (cur_x >= 1 && cur_scan >= 1)
-                {
+                int sx; 
+                int sy;
+                  if (cur_x >= 1 && cur_x <= 500 && cur_scan >= 1 && cur_scan <= 500 )
+                  {
 
                     C.setPixel(cur_x, cur_scan);
+                    //Check if the drawing area is one pixel
+                    if (swapped)
+                    {
+                        swapped = false;
+                        //Are we at an edge
+                        if ((int)active_edge->size() > cur_active_index &&    (int)(active_edge->at(old_active_index).X_OfMinY) == (int)(active_edge->at(cur_active_index).X_OfMinY))
+                        {
+                            //Swap parity value
+                            parity_even = (parity_even) ? false : true;   //Secont true
+                            // cur_active_index++;
+                        }
+                    }
                 }
             }
+
 		}
 
 		//Update the X value 
 		for (int edge = 0; edge < active_edge->size(); edge++)
-		{
-			active_edge->at(edge).X_OfMinY = active_edge->at(edge).X_OfMinY + active_edge->at(edge).EdgeSlope;
+		{ 
+            //TRYING THIS HACK
+            if (!(active_edge->at(edge).EdgeSlope >= FLT_MAX)){
+                //TRYING THIS HACK
+                active_edge->at(edge).X_OfMinY = active_edge->at(edge).X_OfMinY + active_edge->at(edge).EdgeSlope;
+            }
 		}
 
 		//Remove any Edges that are going to be at the next scanline
@@ -231,7 +231,11 @@ void Rasterizer::drawPolygon(MidTerm::Polygon* poly, simpleCanvas& C, float top,
 		
 	}
     delete[] x;
+    x = NULL;
     delete[] y;
+    y = NULL;
+    delete active_edge;
+    active_edge = NULL;
 }
 
 float Rasterizer::GetWorld(float start, float end,float worldcoord)

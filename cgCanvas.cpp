@@ -36,8 +36,8 @@ cgCanvas::cgCanvas(int w, int h) : simpleCanvas (w,h)
 
 cgCanvas::~cgCanvas()
 {
-    delete this->mat;
-    this->mat = NULL;
+  delete this->mat;
+        this->mat = NULL;
 
     for (int x = 0; x < this->PolyGons->size(); x++)
     {
@@ -49,9 +49,13 @@ cgCanvas::~cgCanvas()
     delete this->Rast;
     this->Rast = NULL;
     delete this->topLeft;
+    this->topLeft = NULL;
     delete this->topRight;
+    this->topRight = NULL;
     delete this->bottomLeft;
+    this->bottomLeft = NULL;
     delete this->bottomRight;
+    this->bottomRight = NULL;
 }
 /**
  * addPoly - Add a polygon to the canvas.  This method does not draw
@@ -99,24 +103,40 @@ void cgCanvas::drawPoly (int polyID)
             pol = this->PolyGons->at(x)->Polygon;
 
             pol->ResetTransforms();
-            pol->Transform(*(this->mat));
+         
+            // Normalized coords
+            MidTerm::TransFormMatrix* matn = new MidTerm::TransFormMatrix();
+            matn->NormalizedTransform(this->bottomLeft->x, this->bottomRight->x, this->topLeft->y, this->bottomLeft->y, this->viewport_width, this->viewport_height, this->viewport_lower_left_x, this->viewport_lower_left_y);
+
+            // viewport coords
+            MidTerm::TransFormMatrix* matv = new MidTerm::TransFormMatrix();
+            matv->NormalizeAndViewport(this->bottomLeft->x, this->bottomRight->x, this->topLeft->y, this->bottomLeft->y, this->viewport_width, this->viewport_height, this->viewport_lower_left_x, this->viewport_lower_left_y);
+         
 
 
-           // Normalized coords
-      //     MidTerm::TransFormMatrix* mat = new MidTerm::TransFormMatrix();
-     //      mat->NormalizedTransform(this->bottomLeft->x, this->bottomRight->x, this->topLeft->y, this->bottomLeft->y);
-     //      pol->Transform(*mat);
+            pol->Transform(this->mat);
+            pol->Clip(this->topLeft, this->topRight, this->bottomLeft, this->bottomRight);
+     //       pol->Transform(matn);
+            
+            pol->Transform(matv);
+         
 
 
-//            pol->Clip(this->topLeft, this->topRight, this->bottomLeft, this->bottomRight);
+    
+            
+          
+       
 
 
 
+ 
+          
 
-
-
-
-
+            delete matv;
+           matv = NULL;
+            delete matn;
+	    matn = NULL;
+           
             this->Rast->drawPolygon(pol, *this,this->topLeft->y,this->bottomLeft->y,this->bottomLeft->x,this->bottomRight->x);
             break;
         }
@@ -128,11 +148,10 @@ void cgCanvas::drawPoly (int polyID)
  */
 void cgCanvas::clearTransform()
 {
-    this->mat->DisplayMatrix(); 
-    delete this->mat;
-    this->mat = NULL;
-    this->mat = new MidTerm::TransFormMatrix();
-    this->mat->DisplayMatrix();
+   // delete this->mat;
+   // this->mat = NULL;
+  //  this->mat = new MidTerm::TransFormMatrix();
+    this->mat->Clear();
 }
 
 /**
@@ -198,9 +217,12 @@ void cgCanvas::setClipWindow (float bottom, float top, float left, float right)
  * @param xmin - x coord of lower left of view window (in screen coords)
  * @param ymin - y coord of lower left of view window (in screen coords)
  * @param width - width of view window (in world coords)
- * @param height - width of view window (in world coords)
+ * @param height - height of view window (in world coords)
  */
 void cgCanvas::setViewport (int x, int y, int width, int height)
 {
-    // YOUR IMPLEMENTATION HERE
+    this->viewport_height = height;
+    this->viewport_lower_left_x = x;
+    this->viewport_width = width;
+    this->viewport_lower_left_y = y;
 }

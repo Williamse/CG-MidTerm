@@ -9,6 +9,7 @@ clipper* Polygon::Clipper = new clipper();
 
 Polygon::Polygon(const float x[], const float y[], int vertCount)
 {
+    this->PolyGonVertexsClipped = NULL;
     this->PolyGonVertexes = new std::vector<Vertex*>();
     for (int count = 0; count < vertCount; count++)
     {
@@ -25,13 +26,23 @@ Polygon::~Polygon()
         delete this->PolyGonVertexes->at(x);
         this->PolyGonVertexes->at(x) = NULL;
     }
+    for(int x =0 ; x < this->PolyGonVertexsClipped->size();x++)
+      {
+	delete this->PolyGonVertexsClipped->at(x);
+	this->PolyGonVertexsClipped->at(x) = NULL;
+      }
+
     delete this->PolyGonVertexes;
     this->PolyGonVertexes = NULL;
 
 }
 //Apply this transformation to the polygon
-void Polygon::Transform(MidTerm::TransFormMatrix mat)
+void Polygon::Transform(MidTerm::TransFormMatrix* mat)
 {
+    for (int x = 0; this->PolyGonVertexsClipped != NULL && x < this->PolyGonVertexsClipped->size(); x++)
+    {
+        this->PolyGonVertexsClipped->at(x)->Transform(mat);
+    }
     for (int x = 0; x < this->PolyGonVertexes->size(); x++)
     {
         this->PolyGonVertexes->at(x)->Transform(mat);
@@ -45,6 +56,7 @@ void Polygon::ResetTransforms()
     }
     for (int x = 0;this->PolyGonVertexsClipped != NULL && x < this->PolyGonVertexsClipped->size(); x++)
     {
+	
         this->PolyGonVertexsClipped->at(x)->Reset();
     }
 }
@@ -54,19 +66,19 @@ int Polygon::GetVertexCount()
 
     return return_val;
 }
-float * Polygon::GetX()
+int * Polygon::GetX()
 {
 
-    float  * returnval = new float[this->PolyGonVertexes->size()];
+    int  * returnval = new int[this->PolyGonVertexes->size()];
     for (int x = 0; x < this->PolyGonVertexes->size(); x++)
     {
         returnval[x] = this->PolyGonVertexes->at(x)->x;
     }
     return returnval;
 }
-float * Polygon::GetY()
+int * Polygon::GetY()
 {
-    float * returnval = new float[this->PolyGonVertexes->size()];
+    int * returnval = new int[this->PolyGonVertexes->size()];
     for (int x = 0; x < this->PolyGonVertexes->size(); x++)
     {
         returnval[x] = this->PolyGonVertexes->at(x)->y;
@@ -74,18 +86,18 @@ float * Polygon::GetY()
     return returnval;
 }
 
-float * Polygon::GetXClipped()
+int * Polygon::GetXClipped()
 {
-    float  * returnval = new float[this->PolyGonVertexsClipped->size()];
+    int  * returnval = new int[this->PolyGonVertexsClipped->size()];
     for (int x = 0; x < this->PolyGonVertexsClipped->size(); x++)
     {
         returnval[x] = this->PolyGonVertexsClipped->at(x)->x;
     }
     return returnval;
 }
-float *Polygon::GetYClipped()
+int *Polygon::GetYClipped()
 {
-    float * returnval = new float[this->PolyGonVertexsClipped->size()];
+    int * returnval = new int[this->PolyGonVertexsClipped->size()];
     for (int x = 0; x < this->PolyGonVertexsClipped->size(); x++)
     {
         returnval[x] = this->PolyGonVertexsClipped->at(x)->y;
@@ -104,12 +116,14 @@ bool Polygon::HasClipped()
 void Polygon::Clip(Vertex* topLeft, Vertex* TopRight, Vertex* bottomLeft, Vertex* BottomRight)
 {
     int inSize = this->PolyGonVertexes->size();
-    float * outX = new float[inSize];
-    float * outY = new float[inSize];
+    int * outX = new int[inSize + 1];
+    int * outY = new int[inSize + 1];
+    int * inx  = this->GetX();
+    int * iny = this->GetY();
 
 
+    int outSize = this->Clipper->clipPolygon(inSize, inx, iny, outX, outY, bottomLeft->x, bottomLeft->y, TopRight->x, TopRight->y);
 
-    int outSize = this->Clipper->clipPolygon(inSize, this->GetX(), this->GetY(), outX, outY, bottomLeft->x, bottomLeft->y, TopRight->x, TopRight->y);
     for (int x = 0; this->PolyGonVertexsClipped != NULL && x < this->PolyGonVertexsClipped->size(); x++)
     {
         delete this->PolyGonVertexsClipped->at(x);
@@ -123,4 +137,12 @@ void Polygon::Clip(Vertex* topLeft, Vertex* TopRight, Vertex* bottomLeft, Vertex
         if (this->PolyGonVertexsClipped == NULL){ this->PolyGonVertexsClipped = new vector<MidTerm::Vertex*>(); }
         this->PolyGonVertexsClipped->push_back(ver);
     }
+    delete[] outX;
+    outX = NULL;
+    delete[] outY; 
+    outY = NULL;
+    delete[] inx;
+    inx = NULL;
+    delete[] iny; 
+    iny = NULL;
 }

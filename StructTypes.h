@@ -12,20 +12,20 @@ namespace MidTerm
         float x, y;
         float origx, origy;
 
-        Vertex(float x, float y) :origx(x), origy(y), x(x), y(y)
+        Vertex(float x, float y) :origx((int)x), origy((int)y), x((int)x), y((int)y)
         {
 
         }
 
         //Apply a transform to this Vertex
-        void Transform(TransFormMatrix matrix)
+        void Transform(TransFormMatrix* matrix)
         {
             MidTerm::Vector temp_vec = MidTerm::Vector(3);
             temp_vec[0] = this->x;
             temp_vec[1] = this->y;
             temp_vec[2] = 1;
 
-            temp_vec = (*matrix._Matrix) * temp_vec;
+            temp_vec = (matrix->_Matrix[0]) * temp_vec;
 
             this->x = round(temp_vec[0]);
             this->y = round(temp_vec[1]);
